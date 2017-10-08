@@ -114,14 +114,16 @@ int main()
 				{
 					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
-					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
-					{
-						again = true;
-					}
-					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
-					{
-						again = false;
-					}
+				}
+				if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
+				{
+					again = true;
+					break;
+				}
+				else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
+				{
+					again = false;
+					break;
 				}
 			}
 
@@ -136,15 +138,17 @@ int main()
 				{
 					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
+				}
 					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
+						break;
 					}
 					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
+						break;
 					}
-				}
 			}
 
 
@@ -170,15 +174,17 @@ int main()
 				{
 					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
+				}
 					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
+						break;
 					}
 					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
+						break;
 					}
-				}
 			}
 
 			if (isDrawGame())
@@ -192,15 +198,17 @@ int main()
 				{
 					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
+				}
 					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
+						break;
 					}
 					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
+						break;
 					}
-				}
 			}
 			changeTurn();
 		}
