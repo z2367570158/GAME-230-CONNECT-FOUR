@@ -7,6 +7,8 @@ int board[7][6];
 int ranking[7];
 bool again = true;
 bool win = false;
+bool wrap = false;
+
 string inputString = "";
 int inputColumn = -1;
 char whoturn = 'X';
@@ -25,6 +27,7 @@ int getArrayLen(T& array)
 void paintBoard();
 bool inputNotNumber(string input);
 bool invalidNumber(int input);
+bool invalidYorN(string input);
 void changeTurn();
 bool putOnBoard(int column);
 void initiate();
@@ -45,10 +48,28 @@ int main()
  	while (again)
 	{
 		initiate();
-		system("cls");
+
+		cout << "would you like to activate \"wrap mode\"? y/n : ";
+		string wrapmode = "";
+		cin >> wrapmode;
+		while (invalidYorN(wrapmode))
+		{
+			cout << "sorry, invalid input, please re-input:";
+			cin >> wrapmode; 
+		}
+		if (wrapmode.c_str()[0] == 'Y' || wrapmode.c_str()[0] == 'y')
+		{
+			wrap = true;
+		}
+		else if (wrapmode.c_str()[0] == 'N' || wrapmode.c_str()[0] == 'n')
+		{
+			wrap = false;
+		}
+
 		while (!win)
 		{
-			
+
+			system("cls");
 			paintBoard();
 			
 			cout << "it's " << whoturn << "'s turn," << "choose the column you want to put:";
@@ -82,20 +103,22 @@ int main()
 
 			system("cls");
 
-			if (judgeAll(currentCol, currentRow))
+			if (judgeAll(currentCol, currentRow,wrap))
 			{
 				paintBoard();
 				win = true;
 				cout << "game over, " << whoturn << " wins! do you want to play again? y/n:";
-				char tempAgain = ' ';
-				while (tempAgain != 'Y'&&tempAgain != 'y'&&tempAgain != 'N'&&tempAgain != 'n')
+				string tempAgain = "";
+				cin >> tempAgain;
+				while (invalidYorN(tempAgain))
 				{
+					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
-					if (tempAgain == 'Y' || tempAgain == 'y')
+					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
 					}
-					else if (tempAgain == 'N' || tempAgain == 'n')
+					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
 					}
@@ -107,15 +130,17 @@ int main()
 				paintBoard();
 				win = true;
 				cout << "game over, draw game! do you want to play again? y/n:";
-				char tempAgain = ' ';
-				while (tempAgain != 'Y'&&tempAgain != 'y'&&tempAgain != 'N'&&tempAgain != 'n')
+				string tempAgain = "";
+				cin >> tempAgain;
+				while (invalidYorN(tempAgain))
 				{
+					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
-					if (tempAgain == 'Y' || tempAgain == 'y')
+					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
 					}
-					else if (tempAgain == 'N' || tempAgain == 'n')
+					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
 					}
@@ -134,20 +159,22 @@ int main()
 			paintBoard();
 			system("cls");
 
-			if (judgeAll(currentCol, currentRow))
+			if (judgeAll(currentCol, currentRow,wrap))
 			{
 				paintBoard();
 				win = true;
 				cout << "game over, " << whoturn << " wins! do you want to play again? y/n:";
-				char tempAgain = ' ';
-				while (tempAgain != 'Y'&&tempAgain != 'y'&&tempAgain != 'N'&&tempAgain != 'n')
+				string tempAgain = "";
+				cin >> tempAgain;
+				while (invalidYorN(tempAgain))
 				{
+					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
-					if (tempAgain == 'Y' || tempAgain == 'y')
+					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
 					}
-					else if (tempAgain == 'N' || tempAgain == 'n')
+					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
 					}
@@ -159,15 +186,17 @@ int main()
 				paintBoard();
 				win = true;
 				cout << "game over, draw game! do you want to play again? y/n:";
-				char tempAgain = ' ';
-				while (tempAgain != 'Y'&&tempAgain != 'y'&&tempAgain != 'N'&&tempAgain != 'n')
+				string tempAgain = "";
+				cin >> tempAgain;
+				while (invalidYorN(tempAgain))
 				{
+					cout << "sorry, invalid input, please re-input:";
 					cin >> tempAgain;
-					if (tempAgain == 'Y' || tempAgain == 'y')
+					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
 					}
-					else if (tempAgain == 'N' || tempAgain == 'n')
+					else if (tempAgain.c_str()[0] == 'N' || tempAgain.c_str()[0] == 'n')
 					{
 						again = false;
 					}
@@ -311,5 +340,26 @@ void resetRanking()
 	for (int i = 0; i < getArrayLen(ranking); i++)
 	{
 		ranking[i] = 0;
+	}
+}
+
+
+bool invalidYorN(string input)
+{
+	if (input.empty())
+	{
+		cout << "empty" << endl;
+		return true;
+	}
+	else
+	{
+		if (input.c_str()[0] == 'n' || input.c_str()[0] == 'N' || input.c_str()[0] == 'y' || input.c_str()[0] == 'Y')
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
 	}
 }

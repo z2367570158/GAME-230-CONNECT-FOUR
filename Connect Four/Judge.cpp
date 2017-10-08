@@ -1,264 +1,296 @@
 #include "Judge.h"
 #include "Config.h"
 
-bool judgeAll(int col, int row)
+bool judgeAll(int col, int row, bool wrap)
 {
-	if (judgeCol(col, row) || judgeRow(col, row) || judgeK1(col, row) || judgeK2(col, row))
-		return judgeCol(col, row) || judgeRow(col, row) || judgeK1(col, row) || judgeK2(col, row);
+	return judgeCol(col, row, wrap) || judgeRow(col, row, wrap) || judgeK1(col, row, wrap) || judgeK2(col, row, wrap);
 }
-bool judgeRow(int col, int row)
+bool judgeRow(int col, int row, bool wrap)
 {
 	int count = 1;
 	int XorO = board[col][row];
 	int i = 1;
 
-	//left
-	while (true)
+	if (wrap) 
 	{
-		int tempcol = (col - i < 0 ? (col - i + getArrayLen(board)) : col - i);
-		if (XorO == board[tempcol][row])
+		//left
+		while (true)
 		{
-			count++;
-			if (count >= 4)
+			int tempcol = (col - i < 0 ? (col - i + getArrayLen(board)) : col - i);
+			if (XorO == board[tempcol][row])
 			{
-				return true;
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
 			}
-		}
-		else
-			break;
+			else
+				break;
 
-		i++;
+			i++;
+		}
+		//right
+		i = 1;
+		while (true)
+		{
+			int tempcol = (col + i > (getArrayLen(board) - 1) ? (col + i - getArrayLen(board)) : col + i);
+			if (XorO == board[tempcol][row])
+			{
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
+			}
+			else
+				break;
+
+			i++;
+		}
 	}
-	/*for(int i=1;col-i>=0;i++)
+	else
 	{
+
+		for(int i=1;col-i>=0;i++)
+		{
 		if (XorO == board[col - i][row])
-			count++;
+		count++;
 		else
-			break;
-	}*/
-
-	//right
-	i = 1;
-	while (true)
-	{
-		int tempcol = (col + i > (getArrayLen(board)-1)? (col + i - getArrayLen(board)) : col + i);
-		if (XorO == board[tempcol][row])
-		{
-			count++;
-			if (count >= 4)
-			{
-				return true;
-			}
+		break;
 		}
-		else
-			break;
 
-		i++;
-	}
-	/*for (int i = 1; col + i < getArrayLen(board); i++)
-	{
+
+		for (int i = 1; col + i < getArrayLen(board); i++)
+		{
 		if (XorO == board[col + i][row])
-			count++;
+		count++;
 		else
-			break;
-	}*/
-
+		break;
+		}
+	}
+	
 	if (count >= 4)
 		return true;
 	else
 		return false;
 }
-bool judgeCol(int col, int row)
+bool judgeCol(int col, int row, bool wrap)
 {
 	int count = 1;
 	int XorO = board[col][row];
 	int i = 1;
 
-	//up
-	while (true)
+	if (wrap)
 	{
-		int temprow = (row - i < 0 ? (row - i + getArrayLen(board[col])) : row - i);
-		if (XorO == board[col][temprow])
+		//up
+		while (true)
 		{
-			count++;
-			if (count >= 4)
+			int temprow = (row - i < 0 ? (row - i + getArrayLen(board[col])) : row - i);
+			if (XorO == board[col][temprow])
 			{
-				return true;
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
 			}
-		}
-		else
-			break;
+			else
+				break;
 
-		i++;
-	}
-	//for (int i = 1; row - i >= 0; i++)
-	//{
-	//	if (XorO == board[col][row - i])
-	//		count++;
-	//	else
-	//		break;
-	//}
-	//down
-	i = 1;
-	while (true)
-	{
-		int temprow = (row + i > (getArrayLen(board[col])-1) ? (row + i - getArrayLen(board[col])) : row + i);
-		if (XorO == board[col][temprow])
+			i++;
+		}
+		//down
+		i = 1;
+		while (true)
 		{
-			count++;
-			if (count >= 4)
+			int temprow = (row + i > (getArrayLen(board[col]) - 1) ? (row + i - getArrayLen(board[col])) : row + i);
+			if (XorO == board[col][temprow])
 			{
-				return true;
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
 			}
-		}
-		else
-			break;
+			else
+				break;
 
-		i++;
+			i++;
+		}
 	}
-	/*for (int i = 1; row + i < getArrayLen(board[col]); i++)
+	else
 	{
+
+
+		for (int i = 1; row - i >= 0; i++)
+		{
+			if (XorO == board[col][row - i])
+				count++;
+			else
+				break;
+		}
+
+		for (int i = 1; row + i < getArrayLen(board[col]); i++)
+		{
 		if (XorO == board[col][row + i])
-			count++;
+		count++;
 		else
-			break;
-	}*/
+		break;
+		}
+	}
+
 
 	if (count >= 4)
 		return true;
 	else
 		return false;
 }
-bool judgeK1(int col, int row)
+bool judgeK1(int col, int row, bool wrap)
 {
 	int count = 1;
 	int XorO = board[col][row];
 	int i = 1;
 
-	//left down
-	while (true)
+	if (wrap)
 	{
-		int tempcol = (col - i < 0 ? (col - i + getArrayLen(board)) : col - i);
-		int temprow = (row + i >(getArrayLen(board[col]) - 1) ? (row + i - getArrayLen(board[col])) : row + i);
-
-		if (XorO == board[tempcol][temprow])
+		//left down
+		while (true)
 		{
-			count++;
-			if (count >= 4)
-			{
-				return true;
-			}
-		}
-		else
-			break;
+			int tempcol = (col - i < 0 ? (col - i + getArrayLen(board)) : col - i);
+			int temprow = (row + i >(getArrayLen(board[col]) - 1) ? (row + i - getArrayLen(board[col])) : row + i);
 
-		i++;
+			if (XorO == board[tempcol][temprow])
+			{
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
+			}
+			else
+				break;
+
+			i++;
+		}
+		//right up
+		i = 1;
+		while (true)
+		{
+			int tempcol = (col + i > (getArrayLen(board) - 1) ? (col + i - getArrayLen(board)) : col + i);
+			int temprow = (row - i < 0 ? (row - i + getArrayLen(board[col])) : row - i);
+
+			if (XorO == board[tempcol][temprow])
+			{
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
+			}
+			else
+				break;
+
+			i++;
+		}
 	}
-	/*for (int i = 1; col - i >= 0&& row+i<getArrayLen(board[col-i]); i++)
+	else
 	{
+		for (int i = 1; col - i >= 0&& row+i<getArrayLen(board[col-i]); i++)
+		{
 		if (XorO == board[col-i][row + i])
-			count++;
+		count++;
 		else
-			break;
-	}*/
-	//right up
-	i = 1;
-	while (true)
-	{
-		int tempcol = (col + i > (getArrayLen(board) - 1) ? (col + i - getArrayLen(board)) : col + i);
-		int temprow = (row - i < 0 ? (row - i + getArrayLen(board[col])) : row - i);
-
-		if (XorO == board[tempcol][temprow])
-		{
-			count++;
-			if (count >= 4)
-			{
-				return true;
-			}
+		break;
 		}
-		else
-			break;
 
-		i++;
-	}
-	/*for (int i = 1; col + i < getArrayLen(board) && row - i >= 0; i++)
-	{
+		for (int i = 1; col + i < getArrayLen(board) && row - i >= 0; i++)
+		{
 		if (XorO == board[col + i][row - i])
-			count++;
+		count++;
 		else
-			break;
-	}*/
+		break;
+		}
+	}
+
+	
+	
 
 	if (count >= 4)
 		return true;
 	else
 		return false;
-	return false;
 }
-bool judgeK2(int col, int row)
+bool judgeK2(int col, int row, bool wrap)
 {
 	int count = 1;
 	int XorO = board[col][row];
 	int i = 1;
 
-	//right down
-	while (true)
+	if (wrap)
 	{
-		int tempcol = (col + i > (getArrayLen(board) - 1) ? (col + i - getArrayLen(board)) : col + i);
-		int temprow = (row + i >(getArrayLen(board[col]) - 1) ? (row + i - getArrayLen(board[col])) : row + i);
-
-		if (XorO == board[tempcol][temprow])
+		//right down
+		while (true)
 		{
-			count++;
-			if (count >= 4)
-			{
-				return true;
-			}
-		}
-		else
-			break;
+			int tempcol = (col + i > (getArrayLen(board) - 1) ? (col + i - getArrayLen(board)) : col + i);
+			int temprow = (row + i >(getArrayLen(board[col]) - 1) ? (row + i - getArrayLen(board[col])) : row + i);
 
-		i++;
+			if (XorO == board[tempcol][temprow])
+			{
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
+			}
+			else
+				break;
+
+			i++;
+		}
+		//left up
+		i = 1;
+		while (true)
+		{
+			int tempcol = (col - i < 0 ? (col - i + getArrayLen(board)) : col - i);
+			int temprow = (row - i < 0 ? (row - i + getArrayLen(board[col])) : row - i);
+
+			if (XorO == board[tempcol][temprow])
+			{
+				count++;
+				if (count >= 4)
+				{
+					return true;
+				}
+			}
+			else
+				break;
+
+			i++;
+		}
 	}
-	/*for (int i = 1; col + i < getArrayLen(board) && row + i<getArrayLen(board[col + i]); i++)
+	else
 	{
+		for (int i = 1; col + i < getArrayLen(board) && row + i<getArrayLen(board[col + i]); i++)
+		{
 		if (XorO == board[col + i][row + i])
-			count++;
+		count++;
 		else
-			break;
-	}*/
-	//left up
-	i = 1;
-	while (true)
-	{
-		int tempcol = (col - i < 0 ? (col - i + getArrayLen(board)) : col - i);
-		int temprow = (row - i < 0 ? (row - i + getArrayLen(board[col])) : row - i);
-
-		if (XorO == board[tempcol][temprow])
-		{
-			count++;
-			if (count >= 4)
-			{
-				return true;
-			}
+		break;
 		}
-		else
-			break;
 
-		i++;
-	}
-	/*for (int i = 1; col - i >= 0 && row - i >= 0; i++)
-	{
+		for (int i = 1; col - i >= 0 && row - i >= 0; i++)
+		{
 		if (XorO == board[col - i][row - i])
-			count++;
+		count++;
 		else
-			break;
-	}*/
-
+		break;
+		}
+	}
+	
+	
 	if (count >= 4)
 		return true;
 	else
 		return false;
-	return false;
-	return false;
 }
