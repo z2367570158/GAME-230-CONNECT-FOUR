@@ -13,6 +13,8 @@ string inputString = "";
 int inputColumn = -1;
 char whoturn = 'X';
 
+bool activateAI = false;
+
 int currentRow = -1;
 int currentCol = -1;
 
@@ -64,6 +66,23 @@ int main()
 		else if (wrapmode.c_str()[0] == 'N' || wrapmode.c_str()[0] == 'n')
 		{
 			wrap = false;
+		}
+
+		cout << "would you like to activate ai? y/n : ";
+		string wetherAI = "";
+		cin >> wetherAI;
+		while (invalidYorN(wetherAI))
+		{
+			cout << "sorry, invalid input, please re-input:";
+			cin >> wrapmode;
+		}
+		if (wetherAI.c_str()[0] == 'Y' || wetherAI.c_str()[0] == 'y')
+		{
+			activateAI = true;
+		}
+		else if (wetherAI.c_str()[0] == 'N' || wetherAI.c_str()[0] == 'n')
+		{
+			activateAI = false;
 		}
 
 		while (!win)
@@ -155,26 +174,29 @@ int main()
 			inputColumn = -1;
 
 			changeTurn();
-			resetRanking();
-			setRanking();
-			printRanking();
-			int aiColumn = searchTopRanking();
-			putOnBoard(aiColumn);
-			paintBoard();
-			system("cls");
 
-			if (judgeAll(currentCol, currentRow,wrap))
-			{
+			if (activateAI) {
+
+				resetRanking();
+				setRanking();
+				printRanking();
+				int aiColumn = searchTopRanking();
+				putOnBoard(aiColumn);
 				paintBoard();
-				win = true;
-				cout << "game over, " << whoturn << " wins! do you want to play again? y/n:";
-				string tempAgain = "";
-				cin >> tempAgain;
-				while (invalidYorN(tempAgain))
+				system("cls");
+
+				if (judgeAll(currentCol, currentRow, wrap))
 				{
-					cout << "sorry, invalid input, please re-input:";
+					paintBoard();
+					win = true;
+					cout << "game over, " << whoturn << " wins! do you want to play again? y/n:";
+					string tempAgain = "";
 					cin >> tempAgain;
-				}
+					while (invalidYorN(tempAgain))
+					{
+						cout << "sorry, invalid input, please re-input:";
+						cin >> tempAgain;
+					}
 					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
@@ -185,20 +207,20 @@ int main()
 						again = false;
 						break;
 					}
-			}
-
-			if (isDrawGame())
-			{
-				paintBoard();
-				win = true;
-				cout << "game over, draw game! do you want to play again? y/n:";
-				string tempAgain = "";
-				cin >> tempAgain;
-				while (invalidYorN(tempAgain))
-				{
-					cout << "sorry, invalid input, please re-input:";
-					cin >> tempAgain;
 				}
+
+				if (isDrawGame())
+				{
+					paintBoard();
+					win = true;
+					cout << "game over, draw game! do you want to play again? y/n:";
+					string tempAgain = "";
+					cin >> tempAgain;
+					while (invalidYorN(tempAgain))
+					{
+						cout << "sorry, invalid input, please re-input:";
+						cin >> tempAgain;
+					}
 					if (tempAgain.c_str()[0] == 'Y' || tempAgain.c_str()[0] == 'y')
 					{
 						again = true;
@@ -209,8 +231,9 @@ int main()
 						again = false;
 						break;
 					}
+				}
+				changeTurn();
 			}
-			changeTurn();
 		}
 	}
 
